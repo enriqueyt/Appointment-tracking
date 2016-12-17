@@ -22,9 +22,9 @@ angular
   .config(configure)
   .run(run);
 
-  configure.$inject = ['$stateProvider','$httpProvider'];
+  configure.$inject = ['$stateProvider','$httpProvider', '$urlRouterProvider'];
 
-  function configure ($stateProvider, $httpProvider) {
+  function configure ($stateProvider, $httpProvider, $urlRouterProvider) {
     
     $stateProvider
       .state('index', {
@@ -37,8 +37,25 @@ angular
         controller:'MainCtrl',
         controllerAs:'main'
       })
+      .state('index.login', {
+        url:'/login',
+        templateUrl:'views/login.html',
+        controller:'LoginCtrl',
+        controllerAs:'login'
+      })
+
+      $urlRouterProvider.otherwise('/');
   };
 
-  function run(){
+  run.$inject = ['$rootScope']
+
+  function run($rootScope){
+    $rootScope.isAuthenticate = false;
+    $rootScope.currentUser = '';
+    $rootScope.logout = function(){
+      //llmar al servidor logout
+      $rootScope.isAuthenticate = false;
+      $rootScope.currentUser = '';
+    };
     console.log('test run : WGU')
   };
