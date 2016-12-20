@@ -1,3 +1,12 @@
+<nav class="navbar-fluid navbar-default navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">IAM!</a> 
+    <p class="navbar-text">by WGU</p> 
+    <p class="navbar-right navbar-text" ng-show="!isAuthenticate"><a href="#/login">Login</a></p>
+    <p class="navbar-right navbar-text" ng-show="isAuthenticate"><a href="#">Loguot</a></p>
+    <p class="navbar-right navbar-text" ng-show="isAuthenticate"><a href="#">Holis <b>{{currentUser}}!</b></a></p>
+  </div>
+</nav>
 <div class="jumbotron">
   <h1>'Allo, 'Allo!</h1>
   <p class="lead">

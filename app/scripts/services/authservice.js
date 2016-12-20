@@ -15,7 +15,11 @@ angular.module('iamWebApp')
   function authService($resource){
   	return {
   		auth : function(){
-  			return $resource('/auth/login');
+  			return $resource('http://localhost:3000/auth/login',{},{
+          login:{
+            method:'POST'
+          }
+        });
   		},
   		signup: function(){
   			return $resource('/auth/signup');
