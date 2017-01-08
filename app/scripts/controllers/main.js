@@ -9,7 +9,7 @@
  */
 angular
 	.module('iamWebApp')
-  	.controller('MainCtrl', MainCtrl);
+  .controller('MainCtrl', MainCtrl);
 
   MainCtrl.$inject = [];
 
@@ -21,4 +21,4 @@ angular
       'Karma'
     ];
     
-  }
+  };

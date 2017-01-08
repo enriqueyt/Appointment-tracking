@@ -32,10 +32,14 @@ angular
         templateUrl:'index.html'
       })
       .state('index.main', {
-        url:'/',
+        url:'/main',
         templateUrl:'views/main.html',
         controller:'MainCtrl',
         controllerAs:'main'
+      })
+      .state('index.main.init', {
+        url:'/',
+        templateUrl:'views/init.html'
       })
       .state('index.login', {
         url:'/login',
@@ -43,19 +47,32 @@ angular
         controller:'LoginCtrl',
         controllerAs:'login'
       })
+      .state('index.main.dash', {
+        url:'dash',
+        templateUrl:'views/dashboard.html',
+        controller:'DashboardCtrl',
+        controllerAs:'dash'
+      })
 
       $urlRouterProvider.otherwise('/');
   };
 
-  run.$inject = ['$rootScope']
+  run.$inject = ['$rootScope', '$cookieStore', '$state']
 
-  function run($rootScope){
-    $rootScope.isAuthenticate = false;
-    $rootScope.currentUser = '';
+  function run($rootScope, $cookieStore, $state){
+
+    $rootScope.globals = $cookieStore.get('globals') || {};
+
+    if(typeof $rootScope.globalscurrentUser == 'undefined')
+      $state.go('index.main.init');
+    console.log($rootScope.globals)
+    
     $rootScope.logout = function(){
-      //llmar al servidor logout
-      $rootScope.isAuthenticate = false;
-      $rootScope.currentUser = '';
+      //llamar al servidor logout
+      $rootScope.globals = {};
+      $cookieStore.remove('globals')
+      $state.go('index.main.init');
     };
+
     console.log('test run : WGU')
   };

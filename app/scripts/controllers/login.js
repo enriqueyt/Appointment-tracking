@@ -10,11 +10,12 @@
 angular.module('iamWebApp')
   .controller('LoginCtrl', LoginCtrl);
 
-  LoginCtrl.$inject = ['$scope', '$rootScope', '$state','authService'];
+  LoginCtrl.$inject = ['$scope', '$rootScope', '$state','authService', 'authentication'];
 
-  function LoginCtrl($scope, $rootScope, $state,authService){
-  	console.log('login')
+  function LoginCtrl($scope, $rootScope, $state,authService, authentication){
+  	
   	$scope.user = {};
+    $scope.message = '';
 
   	$scope.index = function(){
 
@@ -23,12 +24,14 @@ angular.module('iamWebApp')
   			.login($scope.user)
   			.$promise
   			.then(function(data){
+          debugger
   				if(data.success){
-  					$rootScope.isAuthenticate = true;
-      				$rootScope.currentUser = data.doc.name;
-      				$rootScope._id = data.doc._id;
-  					$state.go('index.main');
+            authentication.setCredencial(data.doc.name, data.doc.id);
+  					$state.go('index.main.dash');
   				}
+          else{
+            $scope.message = 'Error iniciando sesion';
+          }
   			})
   			.catch(function(error){
   				console.log('error')
