@@ -38,7 +38,7 @@ angular
         controllerAs:'main'
       })
       .state('index.main.init', {
-        url:'/',
+        url:'/init',
         templateUrl:'views/init.html'
       })
       .state('index.login', {
@@ -48,7 +48,7 @@ angular
         controllerAs:'login'
       })
       .state('index.main.dash', {
-        url:'dash',
+        url:'/',
         templateUrl:'views/dashboard.html',
         controller:'DashboardCtrl',
         controllerAs:'dash'
