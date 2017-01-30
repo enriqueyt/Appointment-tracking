@@ -53,6 +53,42 @@ angular
         controller:'DashboardCtrl',
         controllerAs:'dash'
       })
+      .state('index.main.distributorline', {
+        url:'/distributorline',
+        templateUrl:'views/distributorLine.html',
+        controller:'DistributorLineCtrl',
+        controllerAs:'dist'
+      })
+      .state('index.main.createdistributorline', {
+        url:'/createdistributorline',
+        templateUrl:'views/createdistributorline.html',
+        controller:'CreateDistributionLineCtrl',
+        controllerAs:'cdl'
+      })
+      .state('index.main.appointments', {
+        url:'/appointments',
+        templateUrl:'views/appointments.html',
+        controller:'AppointmentsCtrl',
+        controllerAs:'cdl'
+      })
+      .state('index.main.addappointments', {
+        url:'/addappointments',
+        templateUrl:'views/addappointments.html',
+        controller:'AppointmentsCtrl',
+        controllerAs:'cdl'
+      })
+      .state('index.main.users', {
+        url:'/users',
+        templateUrl:'views/users.html',
+        controller:'UsersCtrl',
+        controllerAs:'userCtrl'
+      })
+      .state('index.main.addusers', {
+        url:'/addusers',
+        templateUrl:'views/addusers.html',
+        controller:'UsersCtrl',
+        controllerAs:'userCtrl'
+      })
 
       $urlRouterProvider.otherwise('/');
   };
@@ -64,14 +100,14 @@ angular
     $rootScope.globals = $cookieStore.get('globals') || {};
 
     if(typeof $rootScope.globalscurrentUser == 'undefined')
-      $state.go('index.main.init');
+      $state.go('index.main.dash');
     console.log($rootScope.globals)
     
     $rootScope.logout = function(){
       //llamar al servidor logout
       $rootScope.globals = {};
       $cookieStore.remove('globals')
-      $state.go('index.main.init');
+      $state.go('index.main.dash');
     };
 
     console.log('test run : WGU')

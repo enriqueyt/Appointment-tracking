@@ -1,0 +1,40 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Crear distribución</h1>
+        </div>
+
+        <div class="alert {{dom.class}} alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{dom.message}} <a href="#" class="alert-link">{{dom.link}}</a>
+        </div>
+        
+        <form name="distributionForm" role="form" ng-submit="!distributionForm.$pristine && distributionForm.$valid && createDistributionLine()" novalidate>            
+            <div class="form-group" ng-class="{ 'has-error' : distributionForm.name.$invalid && !distributionForm.name.$pristine  }">
+                <label>Nombre</label>
+                <input class="form-control" placeholder="Nombre" type="text" name="name" ng-model="dl.name" required>
+                <div ng-show="distributionForm.$submitted || distributionForm.name.$touched">
+                	<p style="color:red" class="help-block" ng-show="distributionForm.name.$error.required">Ingrese un valor!</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Numero</label>
+                <input class="form-control" placeholder="Número" type="number" name="numbre" ng-model="dl.number" required ng-minlength="1">
+                
+                	<p style="color:red" class="help-block" ng-show="distributionForm.number.$error.minlength">Ingrese un número!</p>
+                
+            </div>
+            <div class="form-group">
+                <label>Localidad</label>
+                <input class="form-control" placeholder="Localidad" type="text" name="location" ng-model="dl.location" required>
+                <div ng-show="distributionForm.$submitted || distributionForm.location.$touched">
+                	<p style="color:red" class="help-block" ng-show="distributionForm.location.$error.required">Ingrese una localidad!</p>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Crear</button>
+            <button type="reset" class="btn btn-default">Cancelar</button>
+        </form>
+    </div>
+	
+</div>

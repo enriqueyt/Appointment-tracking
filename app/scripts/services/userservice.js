@@ -15,24 +15,32 @@ angular
 
   function userService($resource){
   	return {
-  		user : function(id){
-  			return $resource('http://127.0.0.1:3000/users/:user_id', {user_id : id}, 
+  		user : function(){
+  			return $resource('http://127.0.0.1:3000/users/:id', {id : '@id'}, 
   				{
   					update : {
   						method : 'PUT'
   					}
   				});
   		},
-  		distributionLine : function(id){
-  			return $resource('http://127.0.0.1:3000/distributionLine/:ln_id', {ln_id : id}, 
-  				{
-  					update : {
-  						method : 'PUT'
-  					}
+  		distributionLine : function(){
+  			return $resource('http://127.0.0.1:3000/api/distributionLine/:id', {id : '@id'}, {
+  				  'update' : {
+  					   method : 'PUT'
+  					 },
+             'save':{
+              method:'POST',
+              headers:{
+                'Content-Type': 'application/json'
+              }
+             }
   				});
   		},
-  		userByDl : function(id){
-  			$resource('http://127.0.0.1:3000/userByDl/:_id', {_id:id},
+      allDistributionLine : function(){
+        return $resource('http://127.0.0.1:3000/api/distributionLine/:limit/:skip', {limit:'@limit',skip:'@skip'})
+      },
+  		userByDl : function(){
+  			$resource('http://127.0.0.1:3000/users/userByDl/:id', {id : '@id'},
           {
             get : {
               method :'GET',

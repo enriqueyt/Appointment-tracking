@@ -8,13 +8,12 @@
  * Controller of the iamWebApp
  */
 angular
-	.module('iamWebApp')
-  .controller('MainCtrl', MainCtrl);
+  .module('iamWebApp')
+  .controller('NavCtrl', NavCtrl);
 
   MainCtrl.$inject = [];
 
-  function MainCtrl(){
-  	angular.element('.dropdown-toggle').dropdown();
-    
-  	 console.log('MainCtrl')
+  function NavCtrl(){
+  	 angular.element('.dropdown-toggle').dropdown();
+    console.log('NavCtrl')
   };

@@ -9,7 +9,7 @@
  */
 angular.module('iamWebApp')
   .controller('DashboardCtrl', function () {
-  	console.log('hola')
+  	console.log('DashboardCtrl')
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
