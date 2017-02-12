@@ -17,7 +17,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngTouch',
-    'ui.router'
+    'ui.router',
+    'ui.bootstrap'
   ])
   .config(configure)
   .run(run);
@@ -86,8 +87,26 @@ angular
       .state('index.main.addusers', {
         url:'/addusers',
         templateUrl:'views/addusers.html',
-        controller:'UsersCtrl',
-        controllerAs:'userCtrl'
+        controller:'AddUsersCtrl',
+        controllerAs:'adduserCtrl'
+      })
+      .state('index.main.client', {
+        url:'/client',
+        templateUrl:'views/client.html',
+        controller:'ClientCtrl',
+        controllerAs:'clientCtrl'
+      })
+      .state('index.main.addclient', {
+        url:'/addclient',
+        templateUrl:'views/addclient.html',
+        controller:'AddClientCtrl',
+        controllerAs:'addclientCtrl'
+      })
+      .state('index.main.roles', {
+        url:'/roles',
+        templateUrl:'views/roles.html',
+        controller:'RolesCtrl',
+        controllerAs:'rolesCtrl'
       })
 
       $urlRouterProvider.otherwise('/');
@@ -96,7 +115,8 @@ angular
   run.$inject = ['$rootScope', '$cookieStore', '$state']
 
   function run($rootScope, $cookieStore, $state){
-
+    $rootScope.alerts = [];
+    
     $rootScope.globals = $cookieStore.get('globals') || {};
 
     if(typeof $rootScope.globalscurrentUser == 'undefined')

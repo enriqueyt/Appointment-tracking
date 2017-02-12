@@ -16,12 +16,14 @@ angular
   function userService($resource){
   	return {
   		user : function(){
-  			return $resource('http://127.0.0.1:3000/users/:id', {id : '@id'}, 
-  				{
+  			return $resource('http://127.0.0.1:3000/api/user/:id', {id : '@id'}, {
   					update : {
   						method : 'PUT'
   					}
   				});
+  		},
+			AllUser : function(){
+  			return $resource('http://127.0.0.1:3000/api/user/:limit/:skip', {limit:'@limit',skip:'@skip'});
   		},
   		distributionLine : function(){
   			return $resource('http://127.0.0.1:3000/api/distributionLine/:id', {id : '@id'}, {
@@ -40,13 +42,19 @@ angular
         return $resource('http://127.0.0.1:3000/api/distributionLine/:limit/:skip', {limit:'@limit',skip:'@skip'})
       },
   		userByDl : function(){
-  			$resource('http://127.0.0.1:3000/users/userByDl/:id', {id : '@id'},
-          {
+  			return $resource('http://127.0.0.1:3000/api/user/ByDl/:id', {id : '@id'}, {
             get : {
               method :'GET',
               isArray : true
             }
           });
+  		},
+			role : function(){
+  			return $resource('http://127.0.0.1:3000/api/user/role/list/:id', {id : '@id'}, {
+            get : {
+              method :'GET'            
+            }
+        });
   		}
   	};
   };
