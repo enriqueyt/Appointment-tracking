@@ -1,9 +1,73 @@
+
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Agregar Clientes</h1>
+        <div class="col-lg-12 col-md-12">
+            <h1 class="page-header">Crear Cliente</h1>
         </div>
-        <!-- /.col-lg-12 -->
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="alert alert-{{alert.type}} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{alert.msg}} <a href="#" class="alert-link">{{alert.link}}</a>
+                </div>
+            </div>
+        </div>
+      
+        <form name="clientForm" role="form" ng-submit="!clientForm.$pristine && clientForm.$valid && addclient()" novalidate>  
+
+            <div class="form-group" ng-class="{ 'has-error' : clientForm.name.$invalid && !clientForm.name.$pristine  }">
+                <label>Nombre</label>
+                <input class="form-control" placeholder="Nombre" type="text" name="name" ng-model="client.name" required>
+                <div ng-show="clientForm.$submitted || clientForm.name.$touched">
+                	<p style="color:red" class="help-block" ng-show="clientForm.name.$error.required">Nombre requerido!</p>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : clientForm.state.$invalid && !clientForm.state.$pristine  }">
+                <label>Usuario</label>
+                <input class="form-control" placeholder="Usuario" type="text" name="state" ng-model="client.state" required>
+                <div ng-show="clientForm.$submitted || clientForm.state.$touched">
+                	<p style="color:red" class="help-block" ng-show="clientForm.state.$error.required">State requerido!</p>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : clientForm.location.$invalid && !clientForm.location.$pristine  }">
+                <label>Locación</label>
+                <input class="form-control" placeholder="Location" type="text" name="location" ng-model="client.location" required>
+                <div ng-show="clientForm.$submitted || clientForm.location.$touched">
+                	<p style="color:red" class="help-block" ng-show="clientForm.location.$error.required">Locación requerido!</p>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : clientForm.phone.$invalid && !clientForm.phone.$pristine  }">
+                <label>Telefono</label>
+                <input class="form-control" placeholder="Telefono" type="text" name="phone" ng-model="client.phone" required>
+                <div ng-show="clientForm.$submitted || clientForm.phone.$touched">
+                	<p style="color:red" class="help-block" ng-show="clientForm.phone.$error.required">Telefono requerido!</p>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : clientForm.referred.$error.required && clientForm.referred.$dirty }">
+                <label for="role">Referido por</label>
+                <input class="form-control" placeholder="Referido por" type="text" name="referred" ng-model="client.referred">                
+            </div>
+
+            <div class="form-group">
+            	<div class="checkbox">
+                    <label>
+                    	<input type="checkbox" name="isRead" id="isRead" ng-model="user.isRead" ng-required="true" > Leido
+                    </label>
+                    <div ng-show="clientForm.$submitted || clientForm.isRead.$touched">
+                        <p style="color:red" class="help-block" ng-show="clientForm.isRead.$error.required">Requerido!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Crear</button>
+            <button type="reset" class="btn btn-default">Cancelar</button>
+        </form>
+        
     </div>
-	<h3>{{init}}</h3>
+	
 </div>
