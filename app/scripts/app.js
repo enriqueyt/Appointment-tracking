@@ -75,8 +75,8 @@ angular
       .state('index.main.addappointments', {
         url:'/addappointments',
         templateUrl:'views/addappointments.html',
-        controller:'AppointmentsCtrl',
-        controllerAs:'cdl'
+        controller:'AddAppointmentsCtrl',
+        controllerAs:'acdl'
       })
       .state('index.main.users', {
         url:'/users',

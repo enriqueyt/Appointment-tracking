@@ -15,7 +15,7 @@ angular.module('iamWebApp')
   function appointmentService ($resource){
   	return {
   		appointment : function(id){
-  			return $resource('http://127.0.0.1:3000/api/appointment/:appointment_id', {appointment_id:id}, {
+  			return $resource('http://127.0.0.1:3000/api/appointment/:appointment_id', {appointment_id:'@appointment_id'}, {
   				update : {
 					method : 'PUT'
 				}
@@ -38,11 +38,8 @@ angular.module('iamWebApp')
   				isArray:true
   			});
   		},
-  		list : function(){
-  			return $resource('http://127.0.0.1:3000/api/appointment/allAppointments',{},{
-  				method:'GET',
-  				isArray:true
-  			});
+  		allAppointments : function(){
+  			return $resource('http://127.0.0.1:3000/api/appointment/allAppointments/:limit/:skip',{limit:'@limit', skip:'@skip'});
   		},
   		appointmentsByUser : function(app){
   			return $resource('http://127.0.0.1:3000/api/appointment/appointmentsByUser/:createBy/:skip/:limit',{

@@ -2,11 +2,37 @@
 
 angular
 	.module('iamWebApp')
-  .controller('AppointmentsCtrl', AppointmentsCtrl);
+  .controller('AppointmentsCtrl', AppointmentsCtrl)
+  .controller('AddAppointmentsCtrl', AddAppointmentsCtrl);
 
-  AppointmentsCtrl.$inject = ['$scope', '$rootScope', 'clientService', 'userService', 'appointmentService'];
+  AppointmentsCtrl.$inject = ['$scope', '$rootScope', 'appointmentService'];
 
-  function AppointmentsCtrl($scope, $rootScope, clientService, userService, appointmentService){
+  function AppointmentsCtrl($scope, $rootScope, appointmentService){
+
+    appointmentService
+      .allAppointments()
+      .get({limit:10, skip:0})
+      .$promise
+      .then(function(data){
+        console.log(data);
+        if(data.error){
+          $rootScope.alert = {
+            msg:data.message.message,
+            type:'danger'
+          };
+          return;
+        }
+        $scope.lstAppointments = data.data;
+      })
+      .catch(function(err){
+        console.log(err);
+      })
+
+  };
+
+  AddAppointmentsCtrl.$inject = ['$scope', '$rootScope', 'clientService', 'userService', 'appointmentService'];
+
+  function AddAppointmentsCtrl($scope, $rootScope, clientService, userService, appointmentService){
 
        $rootScope.alert = {
           msg:'',
@@ -45,32 +71,37 @@ angular
         });
 
       $scope.addappointment = function(){
-        
         var mt = moment(($scope.mytime)),
             ad = moment($scope.appointmentDate),
             dif = ad.diff(mt, 'days');
             
         $scope.appointment.appointmentDate = mt.add(dif+1, 'days').format();
-
+        
         appointmentService
           .appointment()
-          .save({}, $scope.appointment)
+          .save({appointment_id:0}, $scope.appointment)
           .$promise
           .then(function(data){
-            console.log(data)
-            $rootScope.alert = {
-              msg:'Cita creada correctamente!',
-              tyoe:'success'
-            };
+            if(!data.error){
+              $scope.appointment = data.data
+              $rootScope.alert = {
+                msg:'Cita creada correctamente!',
+                type:'success'
+              };
+            }
+            else{
+              $rootScope.alert = {
+                msg:data.message,
+                type:'danger'
+              };
+            }
           })
           .catch(function(err){
             $rootScope.alert = {
               msg:err.message,
-              tyoe:'error'
+              type:'danger'
             };
-          })
-
-        console.log($scope.appointment);
+          });
 
       };
 
