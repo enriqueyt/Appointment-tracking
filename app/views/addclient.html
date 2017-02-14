@@ -5,7 +5,7 @@
             <h1 class="page-header">Crear Cliente</h1>
         </div>
 
-        <div class="row">
+        <div class="row" ng-show="alert.msg.length>0">
             <div class="col-lg-12 col-md-12">
                 <div class="alert alert-{{alert.type}} alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -25,18 +25,26 @@
             </div>
 
             <div class="form-group" ng-class="{ 'has-error' : clientForm.state.$invalid && !clientForm.state.$pristine  }">
-                <label>Usuario</label>
-                <input class="form-control" placeholder="Usuario" type="text" name="state" ng-model="client.state" required>
+                <label>Estado</label>
+                <input class="form-control" placeholder="Estado" type="text" name="state" ng-model="client.state" required>
                 <div ng-show="clientForm.$submitted || clientForm.state.$touched">
-                	<p style="color:red" class="help-block" ng-show="clientForm.state.$error.required">State requerido!</p>
+                	<p style="color:red" class="help-block" ng-show="clientForm.state.$error.required">Campo requerido!</p>
                 </div>
             </div>
 
-            <div class="form-group" ng-class="{ 'has-error' : clientForm.location.$invalid && !clientForm.location.$pristine  }">
-                <label>Locación</label>
-                <input class="form-control" placeholder="Location" type="text" name="location" ng-model="client.location" required>
-                <div ng-show="clientForm.$submitted || clientForm.location.$touched">
-                	<p style="color:red" class="help-block" ng-show="clientForm.location.$error.required">Locación requerido!</p>
+            <div class="form-group" ng-class="{ 'has-error' : clientForm.locationLat.$invalid && !clientForm.locationLat.$pristine  }">
+                <label>Latitud</label>
+                <input class="form-control" placeholder="Latitud" type="text" name="locationLat" ng-model="client.locationLat" required>
+                <div ng-show="clientForm.$submitted || clientForm.locationLat.$touched">
+                	<p style="color:red" class="help-block" ng-show="clientForm.locationLat.$error.required">Locación requerido!</p>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : clientForm.locationLon.$invalid && !clientForm.locationLon.$pristine  }">
+                <label>Longitud</label>
+                <input class="form-control" placeholder="Longitud" type="text" name="locationLon" ng-model="client.locationLon" required>
+                <div ng-show="clientForm.$submitted || clientForm.locationLon.$touched">
+                	<p style="color:red" class="help-block" ng-show="clientForm.locationLon.$error.required">Locación requerido!</p>
                 </div>
             </div>
 
@@ -56,11 +64,17 @@
             <div class="form-group">
             	<div class="checkbox">
                     <label>
-                    	<input type="checkbox" name="isRead" id="isRead" ng-model="user.isRead" ng-required="true" > Leido
+                    	<input type="checkbox" name="isRead" id="isRead" ng-model="user.isRead"> Leido
                     </label>
-                    <div ng-show="clientForm.$submitted || clientForm.isRead.$touched">
-                        <p style="color:red" class="help-block" ng-show="clientForm.isRead.$error.required">Requerido!</p>
-                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+            	<div class="checkbox">
+                    <label>
+                    	<input type="checkbox" name="attended" id="attended" ng-model="user.attended"> 
+                        Atendido
+                    </label>
                 </div>
             </div>
             
