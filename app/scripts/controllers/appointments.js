@@ -74,7 +74,7 @@ angular
         var mt = moment(($scope.mytime)),
             ad = moment($scope.appointmentDate),
             dif = ad.diff(mt, 'days');
-            
+        console.log(mt)
         $scope.appointment.appointmentDate = mt.add(dif+1, 'days').format();
         
         appointmentService

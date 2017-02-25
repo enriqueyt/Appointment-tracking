@@ -39,7 +39,7 @@
 
             <div class="form-group" ng-class="{ 'has-error' : appointmentForm.description.$invalid && !appointmentForm.description.$pristine  }">
                 <label>Descripción</label>                
-                <textarea placeholder="Descripción" type="form-control" class="form-control" name="description" rows="3" ng-model="appointment.description" ng-required="true" ng-minlength="8"></textarea>
+                <textarea placeholder="Descripción" type="form-control" class="form-control" name="description" rows="3" ng-model="appointment.description" ng-required="true" ></textarea>
                 <div ng-show="appointmentForm.$submitted || appointmentForm.description.$touched">
                 	<p style="color:red" class="help-block" ng-show="appointmentForm.description.$error.required">Descripción requerido!</p>
                 </div>
