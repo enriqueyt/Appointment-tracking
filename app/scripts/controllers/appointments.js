@@ -3,15 +3,16 @@
 angular
 	.module('iamWebApp')
   .controller('AppointmentsCtrl', AppointmentsCtrl)
-  .controller('AddAppointmentsCtrl', AddAppointmentsCtrl);
+  .controller('AddAppointmentsCtrl', AddAppointmentsCtrl)
+  .controller('ModalAppointmentCtrl', ModalAppointmentCtrl);
 
-  AppointmentsCtrl.$inject = ['$scope', '$rootScope', 'appointmentService'];
+  AppointmentsCtrl.$inject = ['$scope', '$rootScope', '$uibModal', 'appointmentService'];
 
-  function AppointmentsCtrl($scope, $rootScope, appointmentService){
+  function AppointmentsCtrl($scope, $rootScope, $uibModal, appointmentService){
 
     appointmentService
       .allAppointments()
-      .get({limit:10, skip:0})
+      .get({limit:100, skip:0})
       .$promise
       .then(function(data){
         console.log(data);
@@ -26,7 +27,38 @@ angular
       })
       .catch(function(err){
         console.log(err);
-      })
+      });
+
+    $scope.showAppointment = function(appointment){
+
+      var modalInstance = $uibModal.open({
+        animation:true,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: '/views/modals/modal_appointment.html',
+        controller: 'ModalAppointmentCtrl',
+        controllerAs: '$ctrl',
+        size: 'lg',        
+        resolve: {
+          appointment: function () {
+            return appointment;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (data) {
+        if(typeof data.data=='object'){
+          for(var i=0;$scope.lstAppointments.length<i;i++){
+              if($scope.lstAppointments[i]==appointment){
+                $scope.lstAppointments[i]=data.data;
+              }
+          };
+        }
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+
+    };
 
   };
 
@@ -71,7 +103,7 @@ angular
         });
 
       $scope.addappointment = function(){
-        var mt = moment(($scope.mytime)),
+        var mt = moment($scope.mytime),
             ad = moment($scope.appointmentDate),
             dif = ad.diff(mt, 'days');
         console.log(mt)
@@ -105,48 +137,48 @@ angular
 
       };
 
-      $scope.mytime = new Date();
+      $rootScope.mytime = new Date();
 
-      $scope.hstep = 1;
-      $scope.mstep = 15;
+      $rootScope.hstep = 1;
+      $rootScope.mstep = 15;
 
-      $scope.options = {
+      $rootScope.options = {
         hstep: [1, 2, 3],
         mstep: [1, 5, 10, 15, 25, 30]
       };
 
-      $scope.ismeridian = true;
-      $scope.toggleMode = function() {
+      $rootScope.ismeridian = true;
+      $rootScope.toggleMode = function() {
         $scope.ismeridian = ! $scope.ismeridian;
       };
 
-      $scope.update = function() {
+      $rootScope.update = function() {
         var d = new Date();
         d.setHours( 14 );
         d.setMinutes( 0 );
         $scope.mytime = d;
       };
 
-      $scope.clear = function() {
+      $rootScope.clear = function() {
         $scope.mytime = null;
       };
 
-      $scope.today = function() {
+      $rootScope.today = function() {
         $scope.dt = new Date();
       };
-      $scope.today();
+      $rootScope.today();
 
-      $scope.clear = function() {
+      $rootScope.clear = function() {
         $scope.dt = null;
       };
 
-      $scope.inlineOptions = {
+      $rootScope.inlineOptions = {
         customClass: getDayClass,
         minDate: new Date(),
         showWeeks: true
       };
 
-      $scope.dateOptions = {
+      $rootScope.dateOptions = {
         dateDisabled: disabled,
         formatYear: 'yy',
         maxDate: new Date(2020, 5, 22),
@@ -161,34 +193,34 @@ angular
         return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
       }
 
-      $scope.toggleMin = function() {
+      $rootScope.toggleMin = function() {
         $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
         $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
       };
 
-      $scope.toggleMin();
+      $rootScope.toggleMin();
 
-      $scope.open1 = function() {
+      $rootScope.open1 = function() {
         $scope.popup1.opened = true;
       };
 
-      $scope.open2 = function() {
+      $rootScope.open2 = function() {
         $scope.popup2.opened = true;
       };
 
-      $scope.setDate = function(year, month, day) {
+      $rootScope.setDate = function(year, month, day) {
         $scope.dt = new Date(year, month, day);
       };
 
-      $scope.formats = ['dd-MM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-      $scope.format = $scope.formats[0];
-      $scope.altInputFormats = ['M!/d!/yyyy'];
+      $rootScope.formats = ['dd-MM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+      $rootScope.format = $scope.formats[0];
+      $rootScope.altInputFormats = ['M!/d!/yyyy'];
 
-      $scope.popup1 = {
+      $rootScope.popup1 = {
         opened: false
       };
 
-      $scope.popup2 = {
+      $rootScope.popup2 = {
         opened: false
       };
 
@@ -196,7 +228,7 @@ angular
       tomorrow.setDate(tomorrow.getDate() + 1);
       var afterTomorrow = new Date();
       afterTomorrow.setDate(tomorrow.getDate() + 1);
-      $scope.events = [
+      $rootScope.events = [
         {
           date: tomorrow,
           status: 'full'
@@ -224,5 +256,146 @@ angular
 
         return '';
       }
+    
+  };
+
+  ModalAppointmentCtrl.$inject=['$scope', '$rootScope', '$uibModalInstance', 'appointment', 'appointmentService'];
+
+  function ModalAppointmentCtrl($scope, $rootScope, $uibModalInstance, appointment, appointmentService){
+    var aux = new Date(), auxDate = appointment.appointmentDate;
+    
+    $scope.appointment=appointment;
+    $scope.appointmentDate = new Date(moment(appointment.appointmentDate, moment.ISO_8601).format("YYYY"),moment(appointment.appointmentDate, moment.ISO_8601).format("MM"),moment(appointment.appointmentDate, moment.ISO_8601).format("DD"))
+    aux.setHours( moment(appointment.appointmentDate, moment.ISO_8601).format('HH') );
+    aux.setMinutes( moment(appointment.appointmentDate, moment.ISO_8601).format('mm') );
+    $scope.mytime = aux;
+    
+    $scope.updateAppointment = function(){
+      
+      var mt = moment($scope.mytime),
+          ad = moment($scope.appointmentDate),
+          dif = ad.diff(mt, 'days'),
+          obj = {};
+
+      $scope.appointment.appointmentDate = mt.add(dif+1, 'days').format();
+          
+      obj._id=$scope.appointment._id;
+      obj.appointmentDate=$scope.appointment.appointmentDate;
+      
+      if(obj.appointmentDate!=auxDate){
+        appointment.reAssigned=true;
+        obj.reAssigned=true;
+      }
+        
+      if($scope.appointment.address.length>0)
+        obj.address=$scope.appointment.address;
+
+      if($scope.appointment.description.length>0)
+        obj.description=$scope.appointment.description;
+      
+      appointmentService
+        .appointment()
+        .update({appointment_id:obj._id},obj)
+        .$promise
+        .then(function(data){
+          $uibModalInstance.dismiss(data);
+        })
+        .catch(function(err){
+          console.log(err);
+        })
+    };
+
+    $scope.ok = function () {
+      $uibModalInstance.close($scope.appointment);
+    };
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };    
+
+    $scope.options = {
+      customClass: getDayClass,
+      minDate: new Date(),
+      showWeeks: true
+    };
+
+    // Disable weekend selection
+    function disabled(data) {
+      var date = data.date,
+        mode = data.mode;
+      return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function() {
+      $scope.options.minDate = $scope.options.minDate ? null : new Date();
+    };
+
+    $scope.toggleMin();
+
+    $scope.setDate = function(year, month, day) {
+      $scope.appointmentDate = new Date(year, month, day);
+    };
+
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var afterTomorrow = new Date(tomorrow);
+    afterTomorrow.setDate(tomorrow.getDate() + 1);
+    $scope.events = [
+      {
+        date: tomorrow,
+        status: 'full'
+      },
+      {
+        date: afterTomorrow,
+        status: 'partially'
+      }
+    ];
+
+    function getDayClass(data) {
+      var date = data.date,
+        mode = data.mode;
+      if (mode === 'day') {
+        var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+        for (var i = 0; i < $scope.events.length; i++) {
+          var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+          if (dayToCheck === currentDay) {
+            return $scope.events[i].status;
+          }
+        }
+      }
+
+      return '';
+    }
+
+    $scope.hstep = 1;
+    $scope.mstep = 15;
+
+    $scope.options = {
+      hstep: [1, 2, 3],
+      mstep: [1, 5, 10, 15, 25, 30]
+    };
+
+    $scope.ismeridian = true;
+    $scope.toggleMode = function() {
+      $scope.ismeridian = ! $scope.ismeridian;
+    };
+
+    $scope.update = function() {
+      var d = new Date();
+      d.setHours( 14 );
+      d.setMinutes( 0 );
+      $scope.mytime = d;
+    };
+
+    $scope.changed = function () {
+      $log.log('Time changed to: ' + $scope.mytime);
+    };
+
+    $scope.clear = function() {
+      $scope.mytime = null;
+    };
+
     
   };

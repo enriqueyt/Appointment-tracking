@@ -29,7 +29,7 @@
                                     <th>Fecha de la cita</th>
                                     <th>Cliente</th>
                                     <th>Asignado a</th>
-                                    <th>Reasignado</th>
+                                    <th>Re-Agendado</th>
                                     <th>Cliente</th>
                                     <th>Atendido</th>
                                     <th></th>
@@ -42,16 +42,16 @@
                                     <td>{{appointment.client.name}}</td>
                                     <td>{{appointment.assignedTo.name}}</td>                                    
                                     <td>
-                                        <input type="checkbox" name="isRead" id="isRead" ng-model="appointment.reAssigned">
+                                        <input type="checkbox" name="isRead" id="isRead" ng-model="appointment.reAssigned" ng-value="appointment.reAssigned">
                                     </td> 
                                     <td>
-                                        <input type="checkbox" name="isRead" id="isRead" ng-model="appointment.is_client">
+                                        <input type="checkbox" name="isRead" id="isRead" ng-model="appointment.is_client" ng-value="appointment.is_client">
                                     </td>
                                     <td>
-                                        <input type="checkbox" name="isRead" id="isRead" ng-model="appointment.wasAttended">
+                                        <input type="checkbox" name="isRead" id="isRead" ng-model="appointment.wasAttended" ng-value="appointment.wasAttended">
                                     </td>                         
                                     <td>
-                                        <i style="cursor:pointer" class="fa fa-eye" aria-hidden="true"></i>
+                                        <i style="cursor:pointer" class="fa fa-eye" aria-hidden="true" ng-click="showAppointment(appointment)"></i>
                                         <i style="cursor:pointer" class="fa fa-trash" aria-hidden="true"></i>                                        
                                     </td>                                    
                                 </tr>                                

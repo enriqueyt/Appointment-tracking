@@ -11,7 +11,7 @@ angular
 
         clientService
             .clients()
-            .get({limit:10, skip:0})
+            .get({limit:100, skip:0})
             .$promise
             .then(function(data){
                 $scope.lstclients = data.data||[];
@@ -28,7 +28,7 @@ angular
   	    $scope.init = 'AddClientCtrl';
 
         $scope.addclient=function(){
-            
+            console.log($scope.client)
             clientService
                 .client()
                 .save({id:0}, $scope.client)

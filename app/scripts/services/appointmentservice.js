@@ -16,7 +16,7 @@ angular.module('iamWebApp')
   	return {
   		appointment : function(id){
   			return $resource('http://127.0.0.1:3000/api/appointment/:appointment_id', {appointment_id:'@appointment_id'}, {
-  				update : {
+  				'update' : {
 					method : 'PUT'
 				}
   			});
