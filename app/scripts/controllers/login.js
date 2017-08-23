@@ -10,34 +10,33 @@
 angular.module('iamWebApp')
   .controller('LoginCtrl', LoginCtrl);
 
-  LoginCtrl.$inject = ['$scope', '$rootScope', '$state','authService', 'authentication'];
+  LoginCtrl.$inject = ['$scope', '$rootScope', '$state','authService', 'authentication','$cookies'];
 
-  function LoginCtrl($scope, $rootScope, $state,authService, authentication){
+  function LoginCtrl($scope, $rootScope, $state,authService, authentication, $cookies){
   	
   	$scope.user = {};
     $scope.message = '';
+    $scope.errorMessage = false;
+		authentication.clearCredentials();
 
-  	$scope.index = function(){
+    $scope.index = function(){
 
-  		authService
-  			.auth()
-  			.login($scope.user)
-  			.$promise
-  			.then(function(data){
-          debugger
-  				if(data.success){
-            authentication.setCredencial(data.doc.name, data.doc.id);
-  					$state.go('index.main.dash');
-  				}
+      $scope.dataLoading = true;
+      debugger
+      authentication.login($scope.user, function(data){
+					console.log("data")
+					console.log(data)					
+          if(data.success){
+							$state.go('index.main.dash');
+							$rootScope.globals = data.data;							
+							$cookies.put('mySession', JSON.stringify(data.data));
+                          }
           else{
-            $scope.message = 'Error iniciando sesion';
+             $scope.message = 'Usuario o Contraseña Incorrecto!';
           }
-  			})
-  			.catch(function(error){
-  				console.log('error')
-  			})
+          $scope.dataLoading = false;
+        });
 
-
-  	};
+    };
 
   };

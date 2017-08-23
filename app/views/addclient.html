@@ -24,9 +24,17 @@
                 </div>
             </div>
 
+            <div class="form-group" ng-class="{ 'has-error' : clientForm.phone.$invalid && !clientForm.phone.$pristine  }">
+                <label>Telefono</label>
+                <input class="form-control" placeholder="Telefono" type="text" name="phone" ng-model="client.phone" required>
+                <div ng-show="clientForm.$submitted || clientForm.phone.$touched">
+                	<p style="color:red" class="help-block" ng-show="clientForm.phone.$error.required">Telefono requerido!</p>
+                </div>
+            </div>
+
             <div class="form-group" ng-class="{ 'has-error' : clientForm.state.$invalid && !clientForm.state.$pristine  }">
                 <label>Estado</label>
-                <input class="form-control" placeholder="Estado" type="text" name="state" ng-model="client.state" required>
+                <input class="form-control" placeholder="Estado" type="text" name="state" ng-model="client.state" >
                 <div ng-show="clientForm.$submitted || clientForm.state.$touched">
                 	<p style="color:red" class="help-block" ng-show="clientForm.state.$error.required">Campo requerido!</p>
                 </div>
@@ -34,7 +42,7 @@
 
             <div class="form-group" ng-class="{ 'has-error' : clientForm.locationLat.$invalid && !clientForm.locationLat.$pristine  }">
                 <label>Latitud</label>
-                <input class="form-control" placeholder="Latitud" type="text" name="locationLat" ng-model="client.locationLat" required>
+                <input class="form-control" placeholder="Latitud" type="text" name="locationLat" ng-model="client.locationLat" >
                 <div ng-show="clientForm.$submitted || clientForm.locationLat.$touched">
                 	<p style="color:red" class="help-block" ng-show="clientForm.locationLat.$error.required">Locación requerido!</p>
                 </div>
@@ -42,17 +50,9 @@
 
             <div class="form-group" ng-class="{ 'has-error' : clientForm.locationLon.$invalid && !clientForm.locationLon.$pristine  }">
                 <label>Longitud</label>
-                <input class="form-control" placeholder="Longitud" type="text" name="locationLon" ng-model="client.locationLon" required>
+                <input class="form-control" placeholder="Longitud" type="text" name="locationLon" ng-model="client.locationLon" >
                 <div ng-show="clientForm.$submitted || clientForm.locationLon.$touched">
                 	<p style="color:red" class="help-block" ng-show="clientForm.locationLon.$error.required">Locación requerido!</p>
-                </div>
-            </div>
-
-            <div class="form-group" ng-class="{ 'has-error' : clientForm.phone.$invalid && !clientForm.phone.$pristine  }">
-                <label>Telefono</label>
-                <input class="form-control" placeholder="Telefono" type="text" name="phone" ng-model="client.phone" required>
-                <div ng-show="clientForm.$submitted || clientForm.phone.$touched">
-                	<p style="color:red" class="help-block" ng-show="clientForm.phone.$error.required">Telefono requerido!</p>
                 </div>
             </div>
 

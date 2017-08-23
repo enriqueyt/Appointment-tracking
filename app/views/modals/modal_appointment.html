@@ -1,10 +1,10 @@
-
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12 col-md-12">
-            <h1 class="page-header">Crear Cita</h1>
-        </div>
-
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+  <h2>¿Interesado en invertir?</h2>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+      
         <div class="row" ng-show="alert.msg.length>0">
             <div class="col-lg-12 col-md-12">
                 <div class="alert alert-{{alert.type}} alert-dismissable">
@@ -14,21 +14,18 @@
             </div>
         </div>
       
-        <form name="appointmentForm" role="form" ng-submit="!appointmentForm.$pristine && appointmentForm.$valid && addappointment()" novalidate>  
+        <form name="appointmentForm" role="form" ng-submit="!appointmentForm.$pristine && appointmentForm.$valid && updateAppointment()" novalidate>
 
             <div class="form-group">
                 <label for="role">Cliente</label>
 
                 <div ng-class="{ 'has-error' : appointmentForm.client.$error.required && appointmentForm.client.$dirty }">
                   
-                  	<select
+                  	<input
+                        type="text"
                     	name="client"
-                    	ng-model="appointment.client"
-                    	ng-options="ti.name for ti in lstclients track by ti._id"
-                    	class="form-control"
-                    	ng-required="true"> 
-                            <option ng-value="0">seleccione</option>                     
-                	</select>
+                    	ng-model="appointment.client.name"                    	
+                    	class="form-control"/>
 
                   <div ng-show="appointmentForm.$submitted || appointmentForm.client.$touched">
                     <div style="color:red;" ng-show="appointmentForm.client.$error.required">Cliente requerido!</div>
@@ -41,9 +38,8 @@
 
                 <div class="input-group col-md-8">
                     <div class="col-md-8">
-                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" name="appointmentDate" ng-model="appointmentDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" /> 
-                    </div>
-                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        <div uib-datepicker ng-model="appointmentDate" class="well well-sm" datepicker-options="options"></div>
+                    </div>                    
                 </div>
                 
                 <div class="input-group col-md-4">
@@ -72,47 +68,13 @@
                 	<p style="color:red" class="help-block" ng-show="appointmentForm.description.$error.required">Descripción requerido!</p>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="assignedTo">Usuario assignado</label>
-
-                <div ng-class="{ 'has-error' : appointmentForm.assignedTo.$error.required && userForm.assignedTo.$dirty }">
-                  
-                  	<select
-                    	name="assignedTo"
-                    	ng-model="appointment.assignedTo"
-                    	ng-options="ti.name for ti in lstusers track by ti._id"
-                    	class="form-control"
-                    	ng-required="true"> 
-                            <option ng-value="0">seleccione</option>                     
-                	</select>
-
-                  <div ng-show="appointmentForm.$submitted || appointmentForm.assignedTo.$touched">
-                    <div style="color:red;" ng-show="appointmentForm.assignedTo.$error.required">Debe estar asociado a un usuario!</div>
-                  </div>
-                </div>                
-            </div>
-
-            <div class="form-group" ng-class="{ 'has-error' : appointmentForm.location.$invalid && !appointmentForm.location.$pristine  }">
-                <label>Ubicación</label>
-                <input class="form-control" placeholder="Dirección, ej: 33.763634, -84.393738" type="text" name="location" ng-model="appointment.location">
-                <div ng-show="appointmentForm.$submitted || appointmentForm.location.$touched">
-                	<p style="color:red" class="help-block" ng-show="appointmentForm.location.$error.required">Ubicación requerido!</p>
-                </div>
-            </div>
-
-            <div class="form-group">
-            	<div class="checkbox">
-                    <label>
-                    	<input type="checkbox" name="is_client" id="is_client" ng-model="appointment.is_client"> Es Cliente
-                    </label>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Crear</button>
-            <button type="reset" class="btn btn-default">Cancelar</button>
-        </form>
+            <input type="hidden" value="true"  ng-model="appointment.reAssigned" name="reAssigned"/>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
         
-    </div>
-	
+        </form>
+
+  </div>
+</div>
+<div class="modal-footer">
+  
 </div>
