@@ -14,6 +14,16 @@ angular
   MainCtrl.$inject = [];
 
   function NavCtrl(){
-  	 angular.element('.dropdown-toggle').dropdown();
-    console.log('NavCtrl')
+  	  angular.element('.dropdown-toggle').dropdown();
+      console.log('NavCtrl')
+      $scope.$on("MyEvent", function(evt,data){
+		    $rootScope.globals=data;
+		    initNav();
+		  });
   };
+
+  function initNav(){
+    console.log('initNav')
+  };
+
+  

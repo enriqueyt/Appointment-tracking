@@ -8,11 +8,14 @@
  * Controller of the iamWebApp
  */
 angular.module('iamWebApp')
-  .controller('DashboardCtrl', function () {
+  .controller('DashboardCtrl', DashboardCtrl);
+
+  DashboardCtrl.$inject=['$scope', 'authentication'];
+
+function DashboardCtrl($scope, authentication) {
   	console.log('DashboardCtrl')
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+    var temp = authentication.getCredentials();
+    var currentAccount=JSON.parse(JSON.parse(temp))
+    $scope.role=currentAccount.data.role[0];
+    
+  };

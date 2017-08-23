@@ -13,9 +13,10 @@ angular.module('iamWebApp')
   authService.$inject = ['$resource'];
 
   function authService($resource){
+		var url = 'http://'+((/localhost|127.0.0.1/g).test(location.href)?'localhost':'158.69.139.171')+':3000/';
   	return {
   		auth : function(){
-  			return $resource('http://localhost:3000/auth/login',{},{
+  			return $resource(url+'auth/login',{},{
           login:{
             method:'POST'
           }

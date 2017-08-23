@@ -11,28 +11,68 @@ angular
 	.module('iamWebApp')
   	.service('authentication', authentication);
 
-  authentication.$inject = ['$rootScope', '$cookieStore'];
+  authentication.$inject = ['$cookies', '$rootScope', '$timeout', '$http', '$window', 'authService','accountService'];
 
-  function authentication($rootScope, $cookieStore) {
-    var service = {};
+  function authentication($cookies, $rootScope, $timeout, $http, $window, authService, accountService) {
 
-    service.setCredencial = function(username, id){
-    	$rootScope.globals = {
-    		currentUser : {
-    			username: username,
-    			id: id
-    		},
-    		isAuthenticate : true
-    	};
+      var auth = {};
 
-    	$cookieStore.put('globals', $rootScope.globals);
-    };
+      auth.login = function(obj, callback){
 
-    service.crearCredential = function(){
-    	$rootScope.globals = {};
-    	$cookieStore.remove('globals');    		
-    };
+          authService
+            .auth()
+  			    .login(obj)
+            .$promise
+            .then(function (data) {
+              if(data.success){
+                  callback({success:true, data:data});
+                  return;
+              }
+              else{
+                 callback({success:false, doc:data.message});
+                  return;
+              }
+             
+            })
+            .catch(function (err) {
+              callback({success:false});
+            })
+      };
 
-    return service;
+      auth.logout = function(callback){
+        callback(authService.clearCredentials());
+      };
 
+      auth.setCredentials = function(data){
+        $rootScope.globals = $sessionStorage.globals = data.data;
+      };
+
+      auth.loadCredentials = function(access_token, done){
+          accountService
+            .userAccountLogged()
+            .get({ access_token:access_token})
+            .$promise
+            .then(function (data) {
+                $rootScope.globals = data;
+                done(true, globals)
+            });
+      };
+
+      auth.clearCredentials = function () {
+        $rootScope.globals = {};
+        $cookies.remove('mySession');
+        //$window.sessionStorage.removeItem('mySession');
+        //$window.sessionStorage.clear();
+        return true;
+      };
+
+      auth.getCredentials = function(){
+        var aux = $cookies.get('mySession');
+        if(aux!=null){
+          aux = JSON.stringify(aux);
+        }
+        return aux;
+      };
+
+      return auth;
   };

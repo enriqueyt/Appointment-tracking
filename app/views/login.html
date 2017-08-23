@@ -7,14 +7,19 @@
                         <h3 class="panel-title">Inicio de sesion</h3>
                     </div>
                     <div class="panel-body">
-                          <form class="form-auth" ng-submit="index()" novalidate>
+                          <form class="form-auth" name="loginForm" ng-submit="!loginForm.$pristine && loginForm.$valid && index()" novalidate>
                             <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Correo" name="email" type="username" ng-model="user.username" autofocus>
+             
+                                <div class="form-group" ng-class="{ 'has-error' :  loginForm.username.$dirty && loginForm.username.$error.required }">
+                                    <input class="form-control" placeholder="Correo" name="username" type="text" ng-model="user.username" autofocus ng-required="true">
+                                    <span style="color:#a94442;" class="help-block" ng-show="!loginForm.username.$pristine && loginForm.username.$dirty && !loginForm.username.$valid">Usuario inválido!</span>
                                 </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Contrasena" name="password" type="password" ng-model="user.password" value="">
+
+                                <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$dirty && loginForm.password.$error.required }">
+                                    <input class="form-control" placeholder="Contraseña" name="password" type="password" ng-model="user.password" value="" ng-required="true">
+                                    <span style="color:#a94442;" class="help-block" ng-show="loginForm.password.$dirty && !loginForm.password.$valid">Contraseña inválida!</span>
                                 </div>
+
                                 <div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" ng-model="user.remember" value="Recordar">Recordar

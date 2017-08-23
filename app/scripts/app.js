@@ -18,18 +18,19 @@ angular
     'ngRoute',
     'ngTouch',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ngStorage'
   ])
   .config(configure)
   .run(run);
 
-  configure.$inject = ['$stateProvider','$httpProvider', '$urlRouterProvider'];
+  configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider'];
 
-  function configure ($stateProvider, $httpProvider, $urlRouterProvider) {
+  function configure ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     
     $stateProvider
       .state('index', {
-        url:'',
+        url:'/index',
         templateUrl:'index.html'
       })
       .state('index.main', {
@@ -112,23 +113,32 @@ angular
       $urlRouterProvider.otherwise('/');
   };
 
-  run.$inject = ['$rootScope', '$cookieStore', '$state']
+  run.$inject = ['$rootScope', '$window', '$cookieStore', '$sessionStorage', '$location', '$state', '$http', 'authentication']
 
-  function run($rootScope, $cookieStore, $state){
+  function run($rootScope, $window, $cookieStore, $sessionStorage, $location, $state, $http, authentication){
     $rootScope.alerts = [];
-    
-    $rootScope.globals = $cookieStore.get('globals') || {};
+  
+    $rootScope.globals = $sessionStorage.globals || {};
+    $rootScope.idIdea = 0;
 
-    if(typeof $rootScope.globalscurrentUser == 'undefined')
-      $state.go('index.main.dash');
-    console.log($rootScope.globals)
-    
-    $rootScope.logout = function(){
-      //llamar al servidor logout
-      $rootScope.globals = {};
-      $cookieStore.remove('globals')
-      $state.go('index.main.dash');
-    };
+    $rootScope.$on('$locationChangeStart', function (event, next, current) {
+      var log = authentication.getCredentials();      
+      if(log!=undefined){
+        log=JSON.parse(log);
+        if(log!=undefined){
+          $rootScope.globals = log;          
+          $rootScope.$broadcast("MyEvent",log);
+          if($location.path()=='/'){
+              $state.go('index.main.dash');
+          };
+        }
+      }
+      else{
+        $state.go('index.login');
+      }
 
-    console.log('test run : WGU')
+    });
+
   };
+
+  

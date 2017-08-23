@@ -14,19 +14,20 @@ angular
   userService.$inject = ['$resource'];
 
   function userService($resource){
+		var url = 'http://'+((/localhost|127.0.0.1/g).test(location.href)?'localhost':'158.69.139.171')+':3000/';
   	return {
   		user : function(){
-  			return $resource('http://127.0.0.1:3000/api/user/:id', {id : '@id'}, {
+  			return $resource(url+'api/user/:id', {id : '@id'}, {
   					update : {
   						method : 'PUT'
   					}
   				});
   		},
 			AllUser : function(){
-  			return $resource('http://127.0.0.1:3000/api/user/:limit/:skip', {limit:'@limit',skip:'@skip'});
+  			return $resource(url+'api/user/:limit/:skip', {limit:'@limit',skip:'@skip'});
   		},
   		distributionLine : function(){
-  			return $resource('http://127.0.0.1:3000/api/distributionLine/:id', {id : '@id'}, {
+  			return $resource(url+'api/distributionLine/:id', {id : '@id'}, {
   				  'update' : {
   					   method : 'PUT'
   					 },
@@ -39,10 +40,10 @@ angular
   				});
   		},
       allDistributionLine : function(){
-        return $resource('http://127.0.0.1:3000/api/distributionLine/:limit/:skip', {limit:'@limit',skip:'@skip'})
+        return $resource(url+'api/distributionLine/:limit/:skip', {limit:'@limit',skip:'@skip'})
       },
   		userByDl : function(){
-  			return $resource('http://127.0.0.1:3000/api/user/ByDl/:id', {id : '@id'}, {
+  			return $resource(url+'api/user/ByDl/:id', {id : '@id'}, {
             get : {
               method :'GET',
               isArray : true
@@ -50,7 +51,7 @@ angular
           });
   		},
 			role : function(){
-  			return $resource('http://127.0.0.1:3000/api/user/role/list/:id', {id : '@id'}, {
+  			return $resource(url+'api/user/role/list/:id', {id : '@id'}, {
             get : {
               method :'GET'            
             }

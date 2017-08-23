@@ -14,16 +14,17 @@ angular
   clientService.$inject = ['$resource'];
 
   function clientService($resource){
+	var url = 'http://'+((/localhost|127.0.0.1/g).test(location.href)?'localhost':'158.69.139.171')+':3000/';
   	return {
   		client : function(id){
-  			return $resource('http://127.0.0.1:3000/api/client/:id', {id:'@id'}, {
+  			return $resource(url+'api/client/:id', {id:'@id'}, {
 				update : {
 					method : 'PUT'
 				}
 			});
   		},
   		clients : function () {
-  			return $resource('http://127.0.0.1:3000/api/client/complex/all/:limit/:skip', {
+  			return $resource(url+'api/client/complex/all/:limit/:skip', {
   					limit : '@limit',
   					skip : '@skip'
   				},{
@@ -33,14 +34,14 @@ angular
   			});
   		},
   		clientsBy : function () {
-  			return $resource('http://127.0.0.1:3000/api/client/complex/list/:isRead', {isRead:'@isRead'}, {
+  			return $resource(url+'api/client/complex/list/:isRead', {isRead:'@isRead'}, {
   				get: {
   					method: 'GET'
   				}
   			});
   		},
   		findReferredClient : function(id){
-  			return $resource('http://127.0.0.1:3000/api/client/findReferredClient/:id', {id:'@id'}, {
+  			return $resource(url+'api/client/findReferredClient/:id', {id:'@id'}, {
   				get:{
   					method:'GET'
   				}
