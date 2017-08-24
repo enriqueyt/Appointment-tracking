@@ -56,6 +56,13 @@ angular
               method :'GET'            
             }
         });
-  		}
+  		},
+			dashboard : function(){
+				return $resource(url+'dashboard/:id', {id : '@id'}, {
+            get : {
+              method :'GET'            
+            }
+        });
+			}
   	};
   };
