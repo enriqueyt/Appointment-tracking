@@ -46,6 +46,6 @@ angular
   					method:'GET'
   				}
   			});
-  		}
+		}
   	};
   };

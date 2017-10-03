@@ -15,7 +15,6 @@ angular
       .get({limit:10,skip:0})
       .$promise
       .then(function(data){
-        console.log(data);
         $scope.lstUsuarios = data.data||[];
       })
       .catch(function(err){
@@ -50,48 +49,72 @@ angular
       });
 
     $scope.adduser = function(){
-      
-      var user = {
-        name : $scope.user.name,
-        username: $scope.user.username,
-        password: $scope.user.password,
-        email: $scope.user.email,
-        admin: $scope.user.admin,
-        location: $scope.user.location,
-        role : $scope.user.rol.name
+
+      function getAvatar(done){
+        var url = 'https://octodex.github.com', arr=[];
+        $.get(url, function(data){
+            
+            $(data).find('.item a').each(function(index, value){
+                var gitavatar=$(this).first().children().attr('data-src');
+                if(gitavatar!=undefined){
+                    var aux=''.concat(url, gitavatar);
+                    arr.push(aux);
+                }
+            });
+            var res=arr[getRandom(0, arr.length)];
+            done(res);
+        });
+
+        var getRandom=function(min, max){
+            return Math.floor(Math.random()*(max-min+1))+min;
+        };
       };
 
-      if(typeof $scope.user.dl != 'undefined')
-        user.distributorLine = $scope.user.dl
+      getAvatar(function(avatar){
+        var user = {
+          name : $scope.user.name,
+          username: $scope.user.username,
+          password: $scope.user.password,
+          email: $scope.user.email,
+          admin: $scope.user.admin,
+          location: $scope.user.location,
+          role : $scope.user.rol.name
+        };
+        if(avatar != '')
+          user.avatar = avatar
+
+        if(typeof $scope.user.dl != 'undefined')
+          user.distributorLine = $scope.user.dl
         
-      userService
-        .user()
-        .save({id:0}, user)
-        .$promise
-        .then(function(data){
-          $scope.user = data.data;
-          if(!data.error){
+        userService
+          .user()
+          .save({id:0}, user)
+          .$promise
+          .then(function(data){
+            $scope.user = data.data;
+            if(!data.error){
+              $rootScope.alert = {
+                msg:'Se creo con exito!',
+                type:'success',
+                link:''
+              };
+            }
+            else{
+              $rootScope.alert = {
+                msg:data.message.errmsg,
+                type:'danger',
+                link:''
+              };
+            }
+          })
+          .catch(function(err){
             $rootScope.alert = {
-              msg:'Se creo con exito!',
-              type:'success',
-              link:''
-            };
-          }
-          else{
-            $rootScope.alert = {
-              msg:data.message.errmsg,
+              msg:err,
               type:'danger',
               link:''
             };
-          }
-        })
-        .catch(function(err){
-          $rootScope.alert = {
-            msg:err,
-            type:'danger',
-            link:''
-          };
-        });
+          });
+      });
     }; 
 };
 
