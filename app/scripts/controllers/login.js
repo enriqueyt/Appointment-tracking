@@ -22,10 +22,8 @@ angular.module('iamWebApp')
     $scope.index = function(){
 
       $scope.dataLoading = true;
-      debugger
-      authentication.login($scope.user, function(data){
-					console.log("data")
-					console.log(data)					
+      
+      authentication.login($scope.user, function(data){			
           if(data.success){
 							$state.go('index.main.dash');
 							$rootScope.globals = data.data;							

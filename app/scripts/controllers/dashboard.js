@@ -10,14 +10,14 @@
 angular.module('iamWebApp')
   .controller('DashboardCtrl', DashboardCtrl);
 
-  DashboardCtrl.$inject=['$scope', 'authentication', 'userService'];
+  DashboardCtrl.$inject=['$scope','$rootScope', 'authentication', 'userService'];
 
-function DashboardCtrl($scope, authentication, userService) {
+function DashboardCtrl($scope, $rootScope, authentication, userService) {
   	
     var temp = authentication.getCredentials();
     var currentAccount=JSON.parse(JSON.parse(temp))
     $scope.role=currentAccount.data.role[0];
-    
+    $rootScope.$broadcast("currentAccount",currentAccount);
     userService
       .dashboard()
       .get({id:currentAccount.data.id})

@@ -11,13 +11,14 @@ angular
   .module('iamWebApp')
   .controller('NavCtrl', NavCtrl);
 
-  MainCtrl.$inject = [];
+  MainCtrl.$inject = ['$scope','$rootScope'];
 
-  function NavCtrl(){
+  function NavCtrl($scope, $rootScope){
   	  angular.element('.dropdown-toggle').dropdown();
       console.log('NavCtrl')
       $scope.$on("MyEvent", function(evt,data){
-		    $rootScope.globals=data;
+        $rootScope.globals=data;
+        console.log(data)
 		    initNav();
 		  });
   };

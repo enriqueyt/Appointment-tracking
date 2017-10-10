@@ -11,10 +11,21 @@ angular
 	.module('iamWebApp')
   .controller('MainCtrl', MainCtrl);
 
-  MainCtrl.$inject = [];
+  MainCtrl.$inject = ['$scope','$rootScope'];
 
-  function MainCtrl(){
+  function MainCtrl($scope,$rootScope){
   	angular.element('.dropdown-toggle').dropdown();
-    
-  	 console.log('MainCtrl')
+    $scope.avatar='';
+     console.log('MainCtrl')
+     
+     $scope.$on("currentAccount", function(evt,data){
+      console.log(data);
+      $scope.avatar=data.data.avatar;
+    });
+
+     $scope.$on("MyEvent", function(evt,data){
+      $rootScope.globals=data;
+      console.log(data)
+      initNav();
+    });
   };
